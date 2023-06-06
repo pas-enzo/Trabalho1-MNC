@@ -3,7 +3,7 @@
 //sqrt raiz quadrada;
 
 int somatorio(int k , int M[][max], int X[]){
-	int cont=0, j;
+	int cont=0, j, n;
 	for(j=0 ; k<n ; k++){
 		if(j!=k)
 		cont+=M[k][j]*X[k];
@@ -12,27 +12,27 @@ int somatorio(int k , int M[][max], int X[]){
 }
 
 int calculae(int X[], int Xi[], int n){
-	int max, A[max] , maxA;
+	int maxx, A[max] , maxA;
 	float e;
-	max = X[0];
-	for(i=0 ; i<n ; i++){
+	maxx = X[0];
+	for(int i=0 ; i<n ; i++){
 		A[i] = X[i] - Xi[i];
 		
-		if(X[i]>max)max = X[i];
+		if(X[i]>maxx)maxx = X[i];
 	
 		if(i==0)maxA = A[i];
 		else if(A[i] > maxA) maxA = A[i];
 	}
-	e = maxA / max;
+	e = maxA / maxx;
 	return e;
 }
 
 
 int calculaX(int n, int B[], int M[][max], int X[]){
-	int Xi[max], e;
-	for(k=0 ; < k<n ; k++){
+	int Xi[max], e, k;
+	for(k=0 ;  k<n ; k++){
 		Xi[k]=X[k];
-		X[k] = (B[k] - somatorio(k, M, X))M[k][k];
+		X[k] = (B[k] - somatorio(k, M, X))/M[k][k];
 	}
 	e = calculae(X, Xi, n);
 	
@@ -40,7 +40,7 @@ int calculaX(int n, int B[], int M[][max], int X[]){
 }
 
 void JACOBI(int t, int M[][10], int B[] , float erro, int maxint, int X[], int n){		//matriz de gaus compacta
-	int i, j;	//operadores linha e coluna
+	int i, j, e;	//operadores linha e coluna
 	int L[max][max];	//matriz U e L
 	n=0;
 	for(i=0 ; i<maxint; i++, n++ ){
@@ -58,6 +58,7 @@ int main(){
 	
 	int A[max][max], X[max], B[max];
 	int i , n, j;
+	int maxint, Bapro, e, inte;
 	
 	printf("Digite a ordem da matriz: ");
 	scanf("%d", &n);
@@ -72,22 +73,9 @@ int main(){
 	for(i=0 ; i<n ; i++)
 	scanf("%d", &B[i]);
 	
-	printf("Digite o Maximo de interações");
+	printf("Digite o Maximo de interaÃ§Ãµes");
 	scanf("%d", &maxint);
-//	for(i=0 ; i<n ; i++)
-//	scanf("%d", &B[i]);
-	
-//	printf("\nA matriz eh:");
-//	for(i=0 ; i<n ; i++){
-//	printf("\n");
-//	for(j=0 ; j<n ; j++)
-//	printf("%d ", A[i][j]);
-//}
-	
-//	printf("\nO vetor B eh: ");
-//	
-//	for(i=0 ; i<n ; i++)
-//	printf("%d", B[i]);
+
 	
 	JACOBI(n, A, B, Bapro, e, maxint, X, inte);
 
