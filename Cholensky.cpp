@@ -1,25 +1,34 @@
 #include <stdio.h>
+#include <math.h>
 #define max 10
 //sqrt raiz quadrada;
 
 int somatorioPrincipal(int i, int L[][max]){
 	int cont=0;
-	
-	for(k=0; k< i ; k++){
+	printf("\nSOMATORIO PRINCIPAL\n");
+	for(int k=0; k < i ; k++){
 		cont+=pow(L[i][k], 2);
+		printf("\nSomatoria: %d", cont);
 	}
 	return cont;
 }
 
 void DPrincipal(int i, int M[][max], int L[][max]){
-	if(i==0)L[0][0] = sqrt(M[0][0]);
-	else L[i][i] = sqrt(M[i][i]- somatorioPrincipal(i, L));
+	printf("\n\nDIAGONAL PRINCIPAL\n\n");
+	if(i==0){
+		L[0][0] = sqrt(M[0][0]);
+		printf("\n\nMatriz L[0][0]: %d\n", L[0][0]);
+		}
+	else{
+		L[i][i] = sqrt(M[i][i]- somatorioPrincipal(i, L));
+		printf("\nMatriz L[%i][%i]: %d\n", i, i, L[i][i]);
+	}
 }
 
 int somatorioResto(int i, int j, int L[][max]){
 	int cont=0;
 	
-	for(k=0; k<j ; k++){
+	for(int k=0; k<j ; k++){
 		cont+=L[i][k]*L[j][k];
 	}
 	
@@ -27,16 +36,23 @@ int somatorioResto(int i, int j, int L[][max]){
 }
 	
 void DResto(int i, int j,  int M[][max], int L[][max]){
+	printf("\n\nOUTROS VALORES DA MATRIZ\n\n");
 	if(i==0){
-	L[i][j] = M[i][j]/L[i][i];
-	L[j][i] = L[i][j];
-}
-	else L[i][j] = (M[i][j]- somatorioResto(i , j, L)/ L[j][j]);
+		printf("Para i = 0:\n\n");
+		L[i][j] = M[i][j]/L[i][i];
+		printf("Matriz L[%d][%d] = %d\n\n", i, j, L[i][j]);
+		L[j][i] = L[i][j];
+		printf("Matriz L[%d][%d] = %d\n\n", i, j, L[j][i]);
+	}
+	else{ 
+		L[i][j] = (M[i][j]- somatorioResto(i , j, L)/ L[j][j]);
+		printf("L[%d][%d] = %d", i, j, L[i][j]);
+	}
 }
 
 int somatoriaEQLY(int j, int i , int M[][10], int X[]){
 	int cont=0;
-	for( ; j < i-1 ; j++){
+	for(;j < i-1 ; j++){
 		cont+=M[i+1][j] * X[j]; //Ã© i+1 para fixar a linha, pois na chamada de funÃ§Ã£o Ã© i-1
 	}
 	
@@ -44,10 +60,10 @@ int somatoriaEQLY(int j, int i , int M[][10], int X[]){
 }
 
 void EQLY(int t, int M[][10], int X[], int B[]){
-	int i, j, ii=1, jj;
+	int i, j;
 	for(i=0 ; i<t ; i++){
 			if(i==0) X[0]= B[0]/M[0][0];
-			else X[i]= (B[i] - somatoria(0, i-1, M, X))/M[i][i];
+			else X[i]= (B[i] - somatoriaEQLY(0, i-1, M, X))/M[i][i];
 }
 }
 
@@ -62,10 +78,10 @@ int somatoriaEQUX(int j, int i , int M[][10], int X[]){
 }
 
 void EQUX(int t, int M[][10], int X[], int B[]){
-	int i, j, ii=1, jj;
+	int i, j;
 	for(i=0 ; i<t ; i++){
 			if(i==0) X[0]= B[0]/M[0][0];
-			else X[i]= (B[i] - somatoria(i+1, t, M, X))/M[i][i];
+			else X[i]= (B[i] - somatoriaEQUX(i+1, t, M, X))/M[i][i];
 }
 }
 
@@ -73,9 +89,9 @@ void MCHO(int t, int M[][10], int X[], int B[]){		//matriz de gaus compacta
 	int i, j;	//operadores linha e coluna
 	int L[max][max];	//matriz U e L
 	
-	for(i=0, j=0 ; i<t ; i++, j++){
+	for(i=0, j=0 ; i<t ; i++){
 		DPrincipal(i, M, L);
-		//j++
+		j++;
 		DResto(i, j, M, L);
 }
 		 
@@ -103,28 +119,28 @@ int main(){
 	for(j=0 ; j<n ; j++)
 	scanf("%d", &A[i][j]);	
 	
-	printf("Digite o vetor X");
+	// printf("Digite o vetor X\n");
+	// for(i=0 ; i<n ; i++)
+	// scanf("%d", &X[i]);
 	
-	for(i=0 ; i<n ; i++)
-	scanf("%d", &X[i]);
-	
-	printf("Digite o vetor B");
-	
+	printf("Digite o vetor B\n");
 	for(i=0 ; i<n ; i++)
 	scanf("%d", &B[i]);
 	
-	printf("\nA matriz eh:");
+	printf("\nA matriz eh:\n");
 	for(i=0 ; i<n ; i++){
-	printf("\n");
+	printf("\n ");
 	for(j=0 ; j<n ; j++)
 	printf("%d ", A[i][j]);
 }
 	
-	printf("\nO vetor B eh: ");
+	printf("\nO vetor B eh: \n(");
 	
-	for(i=0 ; i<n ; i++)
-	printf("%d", B[i]);
-	
+	for(i=0 ; i<n ; i++){
+		printf(" %d ", B[i]);
+	}
+	printf(")\n");
+
 	MCHO(n, A, X, B);
 
 	printf("\nO vetor X eh: ");
