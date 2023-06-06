@@ -34,6 +34,41 @@ void DResto(int i, int j,  int M[][max], int L[][max]){
 	else L[i][j] = (M[i][j]- somatorioResto(i , j, L)/ L[j][j]);
 }
 
+int somatoriaEQLY(int j, int i , int M[][10], int X[]){
+	int cont=0;
+	for( ; j < i-1 ; j++){
+		cont+=M[i+1][j] * X[j]; //Ã© i+1 para fixar a linha, pois na chamada de funÃ§Ã£o Ã© i-1
+	}
+	
+	return cont;
+}
+
+void EQLY(int t, int M[][10], int X[], int B[]){
+	int i, j, ii=1, jj;
+	for(i=0 ; i<t ; i++){
+			if(i==0) X[0]= B[0]/M[0][0];
+			else X[i]= (B[i] - somatoria(0, i-1, M, X))/M[i][i];
+}
+}
+
+int somatoriaEQUX(int j, int i , int M[][10], int X[]){
+	int cont=0, aux;
+	aux= j-1;	//linha de i fixada  pois j é i+1 na chamda da função
+	for( ; j < i ; j++){
+		cont+=M[aux][j] * X[j]; 
+	}
+	
+	return cont;
+}
+
+void EQUX(int t, int M[][10], int X[], int B[]){
+	int i, j, ii=1, jj;
+	for(i=0 ; i<t ; i++){
+			if(i==0) X[0]= B[0]/M[0][0];
+			else X[i]= (B[i] - somatoria(i+1, t, M, X))/M[i][i];
+}
+}
+
 void MCHO(int t, int M[][10], int X[], int B[]){		//matriz de gaus compacta
 	int i, j;	//operadores linha e coluna
 	int L[max][max];	//matriz U e L
@@ -44,7 +79,15 @@ void MCHO(int t, int M[][10], int X[], int B[]){		//matriz de gaus compacta
 		DResto(i, j, M, L);
 }
 		 
-		//precisa resolver a equacao
+	//precisa resolver a equacao
+	int Y[max];
+	//Ly = b
+	EQLY(t, L , Y , B);
+	EQUX(t, L, X, Y);	
+	
+
+
+
 }
 
 int main(){
